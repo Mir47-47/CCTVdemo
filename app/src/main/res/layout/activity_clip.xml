@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ClipActivity">
+    tools:context=".Activity.ClipActivity">
 
     <!-- 이름칸: 앱 이름 -->
     <TextView

@@ -1,8 +1,10 @@
-package com.example.cctv2;
+package com.example.cctv2.Activity;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.cctv2.R;
 
 public class ClipActivity extends AppCompatActivity {
     @Override

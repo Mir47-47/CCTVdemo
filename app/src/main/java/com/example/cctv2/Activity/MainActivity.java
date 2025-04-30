@@ -1,17 +1,50 @@
-package com.example.cctv2;
+package com.example.cctv2.Activity;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cctv2.R;
+import com.example.cctv2.Service.MessageService;
+
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity {
+    private View videoPlaceholder;
+    private VideoView videoView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); // activity_main.xml 연결
+
+//        //백그라운드
+        Intent intent = new Intent(this, MessageService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent); // API 26 이상에서 Foreground Service 시작
+        } else {
+            startService(intent); // 그 이하 버전에서 일반 서비스 시작
+        }
+
+        // 비디오 플레이어와 플레이스홀더 뷰를 참조
+        videoPlaceholder = findViewById(R.id.videoPlaceholder);
+        videoView = findViewById(R.id.videoView);
+
+        // 파일 경로 지정 (예: 내부 저장소에 있는 파일)
+        String videoPath = getFilesDir() + "/video.mp4"; // 또는 원하는 경로
+        File videoFile = new File(videoPath);
+
+        if (videoFile.exists()) {
+            playVideo(videoFile);
+        } else {
+            showPlaceholder();
+        }
 
 
         // 버튼 6개를 참조
@@ -31,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
-//
+
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,5 +106,19 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void playVideo(File file) {
+        videoPlaceholder.setVisibility(View.GONE);
+        videoView.setVisibility(View.VISIBLE);
+
+        Uri videoUri = Uri.fromFile(file);
+        videoView.setVideoURI(videoUri);
+        videoView.setOnPreparedListener(mp -> videoView.start());
+    }
+
+    private void showPlaceholder() {
+        videoView.setVisibility(View.GONE);
+        videoPlaceholder.setVisibility(View.VISIBLE);
     }
 }
