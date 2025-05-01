@@ -47,8 +47,8 @@ dependencies {
     // ExoPlayer 라이브러리 추가
     implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
     //백그라운드 데이터요청을위한 의존성 추가
-    implementation "androidx.work:work-runtime:2.7.0"
+    implementation "androidx.work:work-runtime-ktx:2.8.0"
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'  // Gson converter 의존성
+    implementation 'com.google.code.gson:gson:2.8.8'
 }

@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -29,10 +36,13 @@
         <activity android:name=".Activity.DeviceConnectionActivity" />
         <activity android:name=".Activity.SettingActivity" />
 
+
         <service
-            android:name=".Service.MessageService"
-            android:foregroundServiceType="dataSync"
-            android:exported="false" />
+            android:name=".Service.MyForegroundService"
+            android:foregroundServiceType="location|dataSync"
+            android:exported="false"
+            tools:ignore="ForegroundServicePermission" />
+
     </application>
 
 </manifest>

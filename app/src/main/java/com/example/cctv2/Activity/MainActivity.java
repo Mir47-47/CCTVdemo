@@ -9,9 +9,10 @@ import android.widget.Button;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.cctv2.R;
-import com.example.cctv2.Service.MessageService;
+import com.example.cctv2.Service.MyForegroundService;
 
 import java.io.File;
 
@@ -25,12 +26,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main); // activity_main.xml 연결
 
 //        //백그라운드
-        Intent intent = new Intent(this, MessageService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent); // API 26 이상에서 Foreground Service 시작
-        } else {
-            startService(intent); // 그 이하 버전에서 일반 서비스 시작
-        }
+        Intent serviceIntent = new Intent(this, MyForegroundService.class);
+        ContextCompat.startForegroundService(this, serviceIntent);
+
 
         // 비디오 플레이어와 플레이스홀더 뷰를 참조
         videoPlaceholder = findViewById(R.id.videoPlaceholder);
