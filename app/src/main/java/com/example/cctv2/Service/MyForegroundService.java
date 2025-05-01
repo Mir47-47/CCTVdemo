@@ -5,7 +5,9 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
@@ -28,10 +30,16 @@ import java.io.IOException;
 import okhttp3.*;
 
 public class MyForegroundService extends Service {
-    private String HostUrl = "https://localhost:8000";
+    //에뮬은 localhost대신 10.0.2.2를 사용해야 pc localhost로 연결됨
+    private String HostUrl = "http://10.0.2.2:8000";
     private Handler handler = new Handler();
     private Runnable runnable;
     private final int interval = 10000; // 10초
+    private int failureCount = 0; // 실패 카운트 초기화
+    private final int MAX_FAILURES = 3; // 최대 실패 횟수
+
+    public static final String ACTION_STATUS_UPDATE = "com.example.status.UPDATE";
+    public static final String EXTRA_STATUS = "status";
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -60,35 +68,75 @@ public class MyForegroundService extends Service {
     private void sendApiRequest() {
         OkHttpClient client = new OkHttpClient();
 
+        // ① 요청 시작 시 상태를 "요청 중"으로 저장
+        sendStatusUpdate("요청 중");
+
         Request request = new Request.Builder()
                 .url(HostUrl+"/message/message") // GET 또는 POST 필요 시 설정
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
+                failureCount++; // 실패 카운트 증가
+                Log.e("Service", "API 요청 실패: " + e.getMessage());
+                if (failureCount >= 3) {
+                    // 서버 연결 실패 3회 이상 시
+                    updateNotification("서버 연결 실패", "API 요청이 3회 실패했습니다.");
+                    sendStatusUpdate("요청 실패");
+                    stopSelf(); // 서비스 종료
+                }
             }
 
             @Override public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    String responseBody = response.body().string();
+                    sendStatusUpdate("서버 요청 성공");
+                    failureCount = 0; // 실패 카운트 초기화
+                    String responseBody = response.body() != null ? response.body().string() : "";
                     try {
                         JSONObject json = new JSONObject(responseBody);
                         String message = json.getString("message");
-
-                        Log.d("Service", "받은 메시지: " + message);
-
-                        // ➕ 예: 알림으로 표시하거나 SharedPreferences에 저장
-                        showNotification(message);
                         saveMessageToFile(message);
-
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e("Service", "JSON 파싱 실패: " + e.getMessage());
+                    }
+                } else {
+                    sendStatusUpdate("응답 실패");
+                    failureCount++;
+                    Log.e("Service", "응답 실패, HTTP 코드: " + response.code());
+                    if (failureCount >= MAX_FAILURES) {
+                        // 응답 실패 3회 이상 시
+                        updateNotification("서버 연결 실패", "서버 응답 오류가 발생했습니다.");
+                        stopSelf(); // 서비스 종료
                     }
                 }
             }
         });
     }
+//서버 요청에 대한 확인데이터 전파
+    private void sendStatusUpdate(String status) {
+        // 상태 저장 (SharedPreferences)
+        SharedPreferences prefs = getSharedPreferences("ServerPrefs", MODE_PRIVATE);
+        prefs.edit().putString("server_status", status).apply();
+        // 상태 업데이트를 MainActivity로 전달
+        Intent broadcastIntent = new Intent(ACTION_STATUS_UPDATE);
+        broadcastIntent.putExtra(EXTRA_STATUS, status);
+        sendBroadcast(broadcastIntent);  // Broadcast로 상태 전송
+    }
+
+    // 알림 내용 업데이트 함수
+    private void updateNotification(String title, String message) {
+        Notification notification = new NotificationCompat.Builder(this, "channel_id")
+                .setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(R.drawable.alram_icon)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.notify(1, notification); // 알림 갱신
+        }
+    }
+
     private void saveMessageToFile(String message) {
         String filename = "messages.txt";
         File file = new File(getFilesDir(), filename);
@@ -117,10 +165,16 @@ public class MyForegroundService extends Service {
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel serviceChannel = new NotificationChannel(
-                    "channel_id", "Background Service Channel", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(serviceChannel);
+            CharSequence name = "API 요청 채널";
+            String description = "서버 요청 실패 알림 채널";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("channel_id", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
         }
     }
 

@@ -113,5 +113,17 @@
         app:layout_constraintTop_toBottomOf="@id/videoContainer"
         tools:ignore="NotSibling" />
 
+    <TextView
+        android:id="@+id/textServerStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="서버 상태: 대기 중"
+        android:textSize="16sp"
+        android:textColor="#FF0000"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/flowButtons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

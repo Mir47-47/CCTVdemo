@@ -1,11 +1,16 @@
 package com.example.cctv2.Activity;
 
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +25,11 @@ public class MainActivity extends AppCompatActivity {
     private View videoPlaceholder;
     private VideoView videoView;
 
+
+    private TextView statusTextView;
+    private BroadcastReceiver statusReceiver;
+
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +38,23 @@ public class MainActivity extends AppCompatActivity {
 //        //백그라운드
         Intent serviceIntent = new Intent(this, MyForegroundService.class);
         ContextCompat.startForegroundService(this, serviceIntent);
+
+        statusTextView = findViewById(R.id.textServerStatus);
+// BroadcastReceiver 등록
+        statusReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // 상태 업데이트 받기
+                String status = intent.getStringExtra(MyForegroundService.EXTRA_STATUS);
+                statusTextView.setText(status);  // 상태 텍스트 업데이트
+            }
+        };
+
+
+
+        // BroadcastReceiver 필터 등록
+        IntentFilter filter = new IntentFilter(MyForegroundService.ACTION_STATUS_UPDATE);
+        registerReceiver(statusReceiver, filter);
 
 
         // 비디오 플레이어와 플레이스홀더 뷰를 참조
@@ -104,6 +131,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    //broadcasting
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // BroadcastReceiver 해제
+        unregisterReceiver(statusReceiver);
     }
 
     private void playVideo(File file) {
