@@ -9,9 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.media.AudioAttributes;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -47,8 +44,7 @@ public class MyForegroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        createNotificationChannel();//무음 채널
-        createSoundNotificationChannel();//소리 채널
+        createNotificationChannel();
         Notification notification = new NotificationCompat.Builder(this, "channel_id")
                 .setContentTitle("백그라운드 작업 실행 중")
                 .setContentText("REST API 요청을 보내는 중...")
@@ -102,7 +98,6 @@ public class MyForegroundService extends Service {
 
                             if (json.has("message") && !json.isNull("message")) {
                                 String message = json.getString("message");
-                                showNotification(message);//알람 띄우기
                                 saveMessageToFile(message);
                             } else {
                                 Log.w("Response", "'message' 키 없음 또는 null");
@@ -164,10 +159,10 @@ public class MyForegroundService extends Service {
     }
 
     private void showNotification(String message) {
-        Notification notification = new NotificationCompat.Builder(this, "sound_channel_id")
-                .setContentTitle("감지됨")
+        Notification notification = new NotificationCompat.Builder(this, "channel_id")
+                .setContentTitle("새 메시지 도착")
                 .setContentText(message)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)//알림 아이콘
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .build();
 
@@ -191,31 +186,6 @@ public class MyForegroundService extends Service {
             }
         }
     }
-
-    private void createSoundNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "소리 알림 채널";
-            String description = "이 채널의 알림은 소리를 냅니다.";
-            int importance = NotificationManager.IMPORTANCE_HIGH;  // HIGH 이상이어야 소리+팝업 가능
-
-            NotificationChannel channel = new NotificationChannel("sound_channel_id", name, importance);
-            channel.setDescription(description);
-
-            // 기본 알림 소리 설정
-            Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .build();
-
-            channel.setSound(soundUri, audioAttributes);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(channel);
-            }
-        }
-    }
-
 
     @Override public IBinder onBind(Intent intent) { return null; }
     @Override public void onDestroy() {
