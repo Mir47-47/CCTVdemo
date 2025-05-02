@@ -6,7 +6,7 @@
 
     <!-- 이름칸: 앱 이름 -->
     <TextView
-        android:id="@+id/textAppName"
+        android:id="@+id/NameAlramList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="구역 설정"

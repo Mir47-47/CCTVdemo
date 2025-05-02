@@ -9,7 +9,7 @@
 
     <!-- 이름칸: 앱 이름 -->
     <TextView
-        android:id="@+id/textAppName"
+        android:id="@+id/NameAlramList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="AIHomeCamClient"
@@ -38,7 +38,7 @@
         android:layout_height="200dp"
         android:layout_marginTop="16dp"
         android:background="#000000"
-        app:layout_constraintTop_toBottomOf="@id/textAppName"
+        app:layout_constraintTop_toBottomOf="@id/NameAlramList"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 

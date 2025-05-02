@@ -31,7 +31,7 @@ import okhttp3.*;
 
 public class MyForegroundService extends Service {
     //에뮬은 localhost대신 10.0.2.2를 사용해야 pc localhost로 연결됨
-    private String HostUrl = "http://10.0.2.2:8000";
+    private final String HostUrl = "http://10.0.2.2:8000";
     private Handler handler = new Handler();
     private Runnable runnable;
     private final int interval = 10000; // 10초
@@ -93,9 +93,18 @@ public class MyForegroundService extends Service {
                     failureCount = 0; // 실패 카운트 초기화
                     String responseBody = response.body() != null ? response.body().string() : "";
                     try {
-                        JSONObject json = new JSONObject(responseBody);
-                        String message = json.getString("message");
-                        saveMessageToFile(message);
+                        if (responseBody != null && !responseBody.trim().isEmpty()) {
+                            JSONObject json = new JSONObject(responseBody);
+
+                            if (json.has("message") && !json.isNull("message")) {
+                                String message = json.getString("message");
+                                saveMessageToFile(message);
+                            } else {
+                                Log.w("Response", "'message' 키 없음 또는 null");
+                            }
+                        } else {
+                            Log.w("Response", "responseBody가 비어 있음, 무시하고 넘어감");
+                        }
                     } catch (JSONException e) {
                         Log.e("Service", "JSON 파싱 실패: " + e.getMessage());
                     }
