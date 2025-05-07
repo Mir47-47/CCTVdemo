@@ -46,6 +46,8 @@ public class MyForegroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // 서비스 시작 로그
+        Log.i("Service", "Start service");
 
         createNotificationChannel();//무음 채널
         createSoundNotificationChannel();//소리 채널
