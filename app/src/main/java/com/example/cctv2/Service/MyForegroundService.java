@@ -52,7 +52,7 @@ public class MyForegroundService extends Service {
         Notification notification = new NotificationCompat.Builder(this, "channel_id")
                 .setContentTitle("백그라운드 작업 실행 중")
                 .setContentText("REST API 요청을 보내는 중...")
-                .setSmallIcon(R.drawable.alram_icon)
+                .setSmallIcon(R.drawable.alarm_icon)
                 .build();
 
         startForeground(1, notification);
@@ -142,7 +142,7 @@ public class MyForegroundService extends Service {
         Notification notification = new NotificationCompat.Builder(this, "channel_id")
                 .setContentTitle(title)
                 .setContentText(message)
-                .setSmallIcon(R.drawable.alram_icon)
+                .setSmallIcon(R.drawable.alarm_icon)
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
