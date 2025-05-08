@@ -14,29 +14,67 @@
         android:gravity="center_vertical"
         android:layout_marginBottom="8dp">
 
-        <TextView
-            android:text="Voice Samples"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_weight="1"
+        <!-- 이 레이아웃이 나머지 공간 전체를 차지하게 만듭니다 -->
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:text="Voice Samples"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="생성일자: 2023.10.01"
+                android:textSize="11sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
 
         <ImageButton
-            android:id="@+id/btn_add_sample"
+            android:id="@+id/refresh_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/add_24px"
+            android:src="@drawable/autorenew_24px"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="샘플 추가"
             android:padding="12dp" />
     </LinearLayout>
 
-    <!-- 스크롤 가능한 리스트 -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:contentDescription="샘플 리스트"/>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageButton
+                android:id="@+id/btn_play_voice_sample"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/image_button_background"
+                android:src="@drawable/play_arrow_48px"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                android:elevation="6dp" />
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/my_image_button"
+                android:gravity="center"
+                android:text="샘플 재생"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textAlignment="center" />
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
