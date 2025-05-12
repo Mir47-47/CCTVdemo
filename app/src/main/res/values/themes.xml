@@ -3,7 +3,13 @@
     <style name="Base.Theme.CCTV2" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:colorBackground">#FFFFFF</item> <!-- 노란색 -->
+
+        <!-- 필요 시 다른 색상도 수정 가능 -->
+        <item name="colorPrimary">#00BCD4</item> <!-- 버튼 배경 색 -->
+        <item name="colorOnPrimary">#FFFFFF</item>
     </style>
+
 
     <style name="Theme.CCTV2" parent="Base.Theme.CCTV2" />
 </resources>

@@ -15,6 +15,7 @@ import com.example.cctv2.Service.MyForegroundService;
 
 public class DeviceConnectionActivity extends AppCompatActivity {
     private TextView textStatus;
+    private Button restartBtn, BackBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class DeviceConnectionActivity extends AppCompatActivity {
         String status = prefs.getString("server_status", "상태 정보 없음");
         textStatus.setText("서버 상태: " + status);
 
-        Button restartBtn = findViewById(R.id.buttonRetry);
+        restartBtn = findViewById(R.id.buttonRetry);
         restartBtn.setOnClickListener(v -> {
             // 서비스 재시작 (요청 재시도)
             Intent serviceIntent = new Intent(this, MyForegroundService.class);
@@ -36,5 +37,11 @@ public class DeviceConnectionActivity extends AppCompatActivity {
 
             Toast.makeText(this, "서버 요청을 다시 시작합니다", Toast.LENGTH_SHORT).show();
         });
+
+        BackBtn = findViewById(R.id.buttonBack);
+        BackBtn.setOnClickListener(v -> {
+            finish(); // 현재 Activity 종료
+        });
     }
+
 }

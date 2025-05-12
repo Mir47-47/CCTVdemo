@@ -1,6 +1,8 @@
 package com.example.cctv2.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +21,7 @@ import java.util.List;
 public class AlramListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     MessageAdapter adapter;
+    Button BackBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,11 @@ public class AlramListActivity extends AppCompatActivity {
         List<String> messages = readMessagesFromFile();
         adapter = new MessageAdapter(messages);
         recyclerView.setAdapter(adapter);
+
+        BackBtn = findViewById(R.id.buttonBack);
+        BackBtn.setOnClickListener(v -> {
+            finish(); // 현재 Activity 종료
+        });
 
 
     }
