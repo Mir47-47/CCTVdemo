@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,7 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cctv2.Activity.AlarmItem;
 import com.example.cctv2.R;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHolder> {
@@ -43,7 +51,15 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         holder.messageText.setText(item.getMessage());
         holder.dateText.setText(item.getDate());
 
+        //상세 팝업
         holder.itemView.setOnClickListener(v -> showDetailPopup(item));
+        // 삭제 버튼 기능 추가
+        holder.deleteButton.setOnClickListener(v -> {
+            deleteItemFromFile(item); // 파일에서도 삭제
+            alarmList.remove(position); // 리스트에서 제거
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, alarmList.size());
+        });
     }
 
     @Override
@@ -53,11 +69,13 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
 
     public static class AlarmViewHolder extends RecyclerView.ViewHolder {
         TextView messageText, dateText;
-
+        Button deleteButton;
         public AlarmViewHolder(@NonNull View itemView) {
             super(itemView);
             messageText = itemView.findViewById(R.id.messageText);
             dateText = itemView.findViewById(R.id.dateText);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
+
         }
     }
 
@@ -95,5 +113,37 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
                 .setPositiveButton("확인", null)
                 .show();
     }
+
+    //삭제 버튼클릭시
+    private void deleteItemFromFile(AlarmItem item) {
+        File file = new File(context.getFilesDir(), "message_log.json");
+        List<String> newLines = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                JSONObject json = new JSONObject(line);
+                String msg = json.optString("message", "");  // 오타 주의
+                String date = json.optString("date", "");     // 오타 주의
+
+                // 현재 줄이 삭제 대상이 아니면 유지
+                if (!(msg.equals(item.getMessage()) && date.equals(item.getDate()))) {
+                    newLines.add(line);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 새로운 내용으로 파일 덮어쓰기
+        try (FileWriter writer = new FileWriter(file, false)) {
+            for (String l : newLines) {
+                writer.write(l + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 

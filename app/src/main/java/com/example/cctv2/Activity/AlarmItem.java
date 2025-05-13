@@ -14,4 +14,16 @@ public class AlarmItem {
     public String getMessage() { return message; }
     public String getDate() { return date; }
     public String getImagePath() { return imagePath; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof AlarmItem)) return false;
+        AlarmItem other = (AlarmItem) obj;
+        return this.message.equals(other.message) && this.date.equals(other.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return (message + date).hashCode();
+    }
 }
