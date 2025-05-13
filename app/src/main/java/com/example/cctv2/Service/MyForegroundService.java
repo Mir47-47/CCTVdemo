@@ -26,9 +26,13 @@ import com.example.cctv2.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 
 import okhttp3.*;
 
@@ -158,10 +162,14 @@ public class MyForegroundService extends Service {
             String filename = "message_log.json";
             File file = new File(getFilesDir(), filename);
 
-            FileWriter writer = new FileWriter(file, true); // append 모드
-            writer.write(jsonObject.toString() + "\n");     // 줄마다 하나의 JSON 저장
-            writer.flush();
-            writer.close();
+            FileOutputStream fos = new FileOutputStream(file, true);
+            OutputStreamWriter writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+
+            bufferedWriter.write(jsonObject.toString());
+            bufferedWriter.newLine(); // 줄 단위 저장
+            bufferedWriter.flush();
+            bufferedWriter.close();
 
             Log.d("SaveJSON", "Saved JSON: " + jsonObject.toString());
         } catch (IOException e) {

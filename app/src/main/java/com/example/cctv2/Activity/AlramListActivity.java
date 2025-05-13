@@ -63,8 +63,8 @@ public class AlramListActivity extends AppCompatActivity {
             String line;
             while ((line = reader.readLine()) != null) {
                 JSONObject json = new JSONObject(line);
-                String message = json.optString("messaege", "");
-                String date = json.optString("data", "");
+                String message = json.optString("message", "");
+                String date = json.optString("date", "");
                 itemList.add(new AlarmItem(message, date));
             }
         } catch (Exception e) {
