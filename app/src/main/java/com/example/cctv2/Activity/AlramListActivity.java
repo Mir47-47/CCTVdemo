@@ -24,7 +24,6 @@ import java.util.List;
 
 public class AlramListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    MessageAdapter adapter;
     Button BackBtn;
 
     @Override
@@ -38,6 +37,11 @@ public class AlramListActivity extends AppCompatActivity {
         List<AlarmItem> alarmList = loadAlarmListFromFile();
         AlarmAdapter adapter = new AlarmAdapter(alarmList, this);
         recyclerView.setAdapter(adapter);
+
+        BackBtn = findViewById(R.id.buttonBack);
+        BackBtn.setOnClickListener(v -> {
+            finish(); // 현재 Activity 종료
+        });
     }
     private List<String> readMessagesFromFile() {
         List<String> messages = new ArrayList<>();

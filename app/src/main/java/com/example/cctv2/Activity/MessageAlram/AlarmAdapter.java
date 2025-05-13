@@ -2,9 +2,13 @@ package com.example.cctv2.Activity.MessageAlram;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cctv2.Activity.AlarmItem;
 import com.example.cctv2.R;
 
+import java.io.File;
 import java.util.List;
 
 public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHolder> {
@@ -57,9 +62,36 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     }
 
     private void showDetailPopup(AlarmItem item) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.alarmlist_detail, null);
+
+        TextView messageText = view.findViewById(R.id.detailMessage);
+        TextView dateText = view.findViewById(R.id.detailDate);
+        ImageView imageView = view.findViewById(R.id.detailImage);
+
+        messageText.setText("메시지: " + item.getMessage());
+        dateText.setText("날짜: " + item.getDate());
+
+        // 예시: drawable에서 이미지 설정
+        if (item.getImagePath() != null && !item.getImagePath().isEmpty()) {
+            File imgFile = new File(item.getImagePath());
+            if (imgFile.exists()) {
+                Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                imageView.setImageBitmap(bitmap);
+            } else {
+                imageView.setImageResource(R.drawable.samplehousepicture); // 기본 이미지
+            }
+        } else {
+            imageView.setImageResource(R.drawable.samplehousepicture); // 기본 이미지
+        }
+//        imageView.setImageResource(R.drawable.your_image); // 또는
+
+        // 만약 이미지 경로/URL이 있다면 Glide 사용 (예)
+        // Glide.with(context).load(item.getImageUrl()).into(imageView);
+
         new AlertDialog.Builder(context)
                 .setTitle("알람 상세")
-                .setMessage("메시지: " + item.getMessage() + "\n날짜: " + item.getDate())
+                .setView(view)
                 .setPositiveButton("확인", null)
                 .show();
     }
