@@ -69,40 +69,22 @@ public class MainActivity extends AppCompatActivity {
             // 권한 없음. 서비스 시작 불가
         }
 
-//        statusTextView = findViewById(R.id.textServerStatus);
-//// BroadcastReceiver 등록
-//        statusReceiver = new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) {
-//                // 상태 업데이트 받기
-//                String status = intent.getStringExtra(MyForegroundService.EXTRA_STATUS);
-//                statusTextView.setText(status);  // 상태 텍스트 업데이트
-//            }
-//        };
-
-
-
-        // BroadcastReceiver 필터 등록
-        IntentFilter filter = new IntentFilter(MyForegroundService.ACTION_STATUS_UPDATE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(statusReceiver, filter, RECEIVER_EXPORTED);
-        } else {
-            registerReceiver(statusReceiver, filter);
-        }
-
 
         // 비디오 플레이어와 플레이스홀더 뷰를 참조
         videoPlaceholder = findViewById(R.id.videoPlaceholder);
         videoView = findViewById(R.id.videoView);
 
-        // 파일 경로 지정 (예: 내부 저장소에 있는 파일)
-        String videoPath = getFilesDir() + "/video.mp4"; // 또는 원하는 경로
-        File videoFile = new File(videoPath);
+// VideoView를 초기화하고, raw 폴더에서 비디오 파일을 가져오는 코드
+        String videoUriString = "android.resource://" + getPackageName() + "/raw/videosample"; // raw 폴더에서 직접 URI를 생성
 
-        if (videoFile.exists()) {
-            playVideo(videoFile);
-        } else {
-            showPlaceholder();
+        try {
+            // 비디오 URI를 Uri 객체로 변환 후 재생하는 코드
+            Uri videoUri = Uri.parse(videoUriString);  // String을 Uri로 변환
+            playVideo(videoUri);
+        } catch (Exception e) {
+            // 예외가 발생한 경우 placeholder를 표시하고 오류 메시지를 출력
+            e.printStackTrace();  // 로그에 오류 출력
+            showPlaceholder();    // Placeholder 화면 표시
         }
 
 
@@ -153,13 +135,13 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         // BroadcastReceiver 해제
         unregisterReceiver(statusReceiver);
+        finish();
     }
 
-    private void playVideo(File file) {
+    private void playVideo(Uri videoUri) {
         videoPlaceholder.setVisibility(View.GONE);
         videoView.setVisibility(View.VISIBLE);
 
-        Uri videoUri = Uri.fromFile(file);
         videoView.setVideoURI(videoUri);
         videoView.setOnPreparedListener(mp -> videoView.start());
     }

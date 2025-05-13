@@ -24,7 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginTop="16dp"
-        android:background="#000000">
+        android:background="#000000"
+        android:foregroundGravity="center">
 
         <View
             android:id="@+id/videoPlaceholder"
@@ -36,8 +37,10 @@
             android:id="@+id/videoView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:layout_gravity="center"
+            android:visibility="gone" />
     </FrameLayout>
+
 
     <!-- 버튼 4개를 2행 2열로 정사각형 배치 -->
     <GridLayout
