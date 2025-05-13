@@ -2,14 +2,18 @@ package com.example.cctv2.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cctv2.Activity.MessageAlram.AlarmAdapter;
 import com.example.cctv2.Activity.MessageAlram.MessageAdapter;
 import com.example.cctv2.R;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,21 +30,14 @@ public class AlramListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.avtivity_alramlist); // 이 부분이 XML 레이아웃을 화면에 표시함
+        setContentView(R.layout.avtivity_alramlist);
 
         recyclerView = findViewById(R.id.AlramListrecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<String> messages = readMessagesFromFile();
-        adapter = new MessageAdapter(messages);
+        List<AlarmItem> alarmList = loadAlarmListFromFile();
+        AlarmAdapter adapter = new AlarmAdapter(alarmList, this);
         recyclerView.setAdapter(adapter);
-
-        BackBtn = findViewById(R.id.buttonBack);
-        BackBtn.setOnClickListener(v -> {
-            finish(); // 현재 Activity 종료
-        });
-
-
     }
     private List<String> readMessagesFromFile() {
         List<String> messages = new ArrayList<>();
@@ -57,4 +54,28 @@ public class AlramListActivity extends AppCompatActivity {
 
         return messages;
     }
+
+    private List<AlarmItem> loadAlarmListFromFile() {
+        List<AlarmItem> itemList = new ArrayList<>();
+        File file = new File(getFilesDir(), "message_log.json");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                JSONObject json = new JSONObject(line);
+                String message = json.optString("messaege", "");
+                String date = json.optString("data", "");
+                itemList.add(new AlarmItem(message, date));
+            }
+        } catch (Exception e) {
+            Log.e("AlarmListActivity", "파일 읽기 오류", e);
+        }
+
+        return itemList;
+    }
+
 }
+
+
+
+

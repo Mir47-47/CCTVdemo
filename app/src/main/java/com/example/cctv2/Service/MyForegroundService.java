@@ -104,8 +104,8 @@ public class MyForegroundService extends Service {
 
                             if (json.has("message") && !json.isNull("message")) {
                                 String message = json.getString("message");
-                                showNotification(message);//알람 띄우기
-                                saveMessageToFile(message);
+                                showNotification(message);         // 알림 띄우기
+                                saveJsonToFile(json);              // 전체 응답(json) 저장
                             } else {
                                 Log.w("Response", "'message' 키 없음 또는 null");
                             }
@@ -153,17 +153,22 @@ public class MyForegroundService extends Service {
         }
     }
 
-    private void saveMessageToFile(String message) {
-        String filename = "messages.txt";
-        File file = new File(getFilesDir(), filename);
+    private void saveJsonToFile(JSONObject jsonObject) {
+        try {
+            String filename = "message_log.json";
+            File file = new File(getFilesDir(), filename);
 
-        try (FileWriter writer = new FileWriter(file, true)) { // true = append
-            writer.append(message).append("\n");
-            Log.d("Service", "메시지를 파일에 저장함: " + message);
+            FileWriter writer = new FileWriter(file, true); // append 모드
+            writer.write(jsonObject.toString() + "\n");     // 줄마다 하나의 JSON 저장
+            writer.flush();
+            writer.close();
+
+            Log.d("SaveJSON", "Saved JSON: " + jsonObject.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     private void showNotification(String message) {
         Notification notification = new NotificationCompat.Builder(this, "sound_channel_id")
