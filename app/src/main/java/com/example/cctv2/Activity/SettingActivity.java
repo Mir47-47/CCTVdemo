@@ -64,6 +64,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void startRecording() {
+        recordButton.setEnabled(false);//버튼 비활성화, 비활성화 해도 누르고 있던건 인식됨
         checkServerConnection(isConnected -> {
             if (isConnected) {
                 try {
@@ -81,11 +82,14 @@ public class SettingActivity extends AppCompatActivity {
                     e.printStackTrace();
                     Log.e("SettingActivity.Recording", "녹음 시작 실패: " + e.getMessage());
                 }
+                recordButton.setEnabled(true);//버튼 활성화
             } else {
                 Toast.makeText(this, "서버와 연결되지 않았습니다.", Toast.LENGTH_SHORT).show();
                 Log.e("SettingActivity", "서버 연결 실패로 녹음 시작 불가");
+                recordButton.setEnabled(true);//버튼 활성화
             }
         });
+
     }
 
     private void checkServerConnection(ServerConnectionCallback callback) {
