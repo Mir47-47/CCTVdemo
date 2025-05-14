@@ -53,6 +53,8 @@ public class MyForegroundService extends Service {
         // 서비스 시작 로그
         Log.i("Service", "Start service");
 
+        saveServerUrl(HostUrl);//서버 주소 저장
+
         createNotificationChannel();//무음 채널
         createSoundNotificationChannel();//소리 채널
         Notification notification = new NotificationCompat.Builder(this, "channel_id")
@@ -229,6 +231,11 @@ public class MyForegroundService extends Service {
                 notificationManager.createNotificationChannel(channel);
             }
         }
+    }
+    //서버 URL을 setting으로 넘기기 위한 저장
+    private void saveServerUrl(String serverUrl) {
+        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        prefs.edit().putString("server_url", serverUrl).apply();
     }
 
 

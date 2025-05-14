@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -50,7 +51,11 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.FOREGROUND_SERVICE_LOCATION,
-                        Manifest.permission.POST_NOTIFICATIONS
+                        Manifest.permission.POST_NOTIFICATIONS,
+                        //소리 녹음 권한
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
                 },
                 1
         );
@@ -124,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                intent.putExtra("server_url", getServerUrl());
                 startActivity(intent);
             }
         });
@@ -149,5 +155,11 @@ public class MainActivity extends AppCompatActivity {
     private void showPlaceholder() {
         videoView.setVisibility(View.GONE);
         videoPlaceholder.setVisibility(View.VISIBLE);
+    }
+
+    //서버 주소 가져오기
+    private String getServerUrl() {
+        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        return prefs.getString("server_url", ""); // 기본값은 빈 문자열
     }
 }
