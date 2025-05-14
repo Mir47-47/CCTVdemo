@@ -20,8 +20,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:text="Voice Samples"
@@ -29,12 +28,6 @@
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <TextView
-                android:text="생성일자: 2023.10.01"
-                android:textSize="11sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"/>
         </LinearLayout>
 
         <ImageButton
@@ -47,6 +40,28 @@
             android:padding="12dp" />
     </LinearLayout>
 
+    <!-- 영상 재생 영역 -->
+    <FrameLayout
+        android:id="@+id/videoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:background="#000000"
+        android:foregroundGravity="center">
+
+        <View
+            android:id="@+id/videoPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000000" />
+
+        <VideoView
+            android:id="@+id/setVideoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -70,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/my_image_button"
                 android:gravity="center"
-                android:text="샘플 재생"
+                android:text="목소리 전달"
                 android:textSize="20sp"
                 android:layout_gravity="center"
                 android:textStyle="bold"

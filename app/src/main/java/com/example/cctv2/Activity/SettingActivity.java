@@ -1,12 +1,14 @@
 package com.example.cctv2.Activity;
 
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -36,6 +38,8 @@ public class SettingActivity extends AppCompatActivity {
     private MediaRecorder mediaRecorder;
     private File audioFile;
     private String severUrl = null;
+    private VideoView videoView;
+    private View videoPlaceholder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,23 @@ public class SettingActivity extends AppCompatActivity {
         //서버 주소 가져오기
         severUrl = getIntent().getStringExtra("server_url");
         Log.d("SettingActivity", "서버 주소: " + severUrl);
+
+        videoPlaceholder = findViewById(R.id.videoPlaceholder);
+        videoView = findViewById(R.id.setVideoView);
+        // VideoView를 초기화하고, raw 폴더에서 비디오 파일을 가져오는 코드
+        String videoUriString = "android.resource://" + getPackageName() + "/raw/videosample"; // raw 폴더에서 직접 URI를 생성
+
+        try {
+            // 비디오 URI를 Uri 객체로 변환 후 재생하는 코드
+            Uri videoUri = Uri.parse(videoUriString);  // String을 Uri로 변환
+            playVideo(videoUri);
+        } catch (Exception e) {
+            // 예외가 발생한 경우 placeholder를 표시하고 오류 메시지를 출력
+            e.printStackTrace();  // 로그에 오류 출력
+            showPlaceholder();    // Placeholder 화면 표시
+        }
+
+
 
         //버튼 누르는 동안 녹음, 녹음이 끝나면 저장
         //서버로 데이터를 보냈으면 데이터삭제
@@ -200,5 +221,18 @@ public class SettingActivity extends AppCompatActivity {
         @Multipart
         @POST("upload") // 서버의 업로드 엔드포인트
         Call<ResponseBody> uploadAudio(@Part MultipartBody.Part file);
+    }
+
+    private void playVideo(Uri videoUri) {
+        videoPlaceholder.setVisibility(View.GONE);
+        videoView.setVisibility(View.VISIBLE);
+
+        videoView.setVideoURI(videoUri);
+        videoView.setOnPreparedListener(mp -> videoView.start());
+    }
+
+    private void showPlaceholder() {
+        videoView.setVisibility(View.GONE);
+        videoPlaceholder.setVisibility(View.VISIBLE);
     }
 }
