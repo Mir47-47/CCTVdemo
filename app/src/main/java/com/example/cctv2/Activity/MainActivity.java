@@ -8,10 +8,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.SurfaceTexture;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,12 +30,15 @@ import androidx.core.content.ContextCompat;
 import com.example.cctv2.R;
 import com.example.cctv2.Service.MyForegroundService;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
     private View videoPlaceholder;
-    private VideoView videoView;
+    private TextureView videoView;
+    private MediaPlayer mediaPlayer;
 
 
     private TextView statusTextView;
@@ -79,18 +87,59 @@ public class MainActivity extends AppCompatActivity {
         videoPlaceholder = findViewById(R.id.videoPlaceholder);
         videoView = findViewById(R.id.videoView);
 
-// VideoView를 초기화하고, raw 폴더에서 비디오 파일을 가져오는 코드
+        // raw 폴더에서 비디오 파일을 가져오는 코드
         String videoUriString = "android.resource://" + getPackageName() + "/raw/videosample"; // raw 폴더에서 직접 URI를 생성
 
         try {
-            // 비디오 URI를 Uri 객체로 변환 후 재생하는 코드
-            Uri videoUri = Uri.parse(videoUriString);  // String을 Uri로 변환
-            playVideo(videoUri);
+            // videoView의 서피스를 이용해 동영상 재생
+            videoView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
+                @Override
+                public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+                    // 서피스가 이용 가능해 지면 호출되는 함수
+                    Surface previewSurface = new Surface(surface);
+                    mediaPlayer = new MediaPlayer();
+                    try {
+                        // 미디어 플레이어에 동영상 제공
+                        mediaPlayer.setDataSource(MainActivity.this, Uri.parse(videoUriString));
+
+                        // 재생될 서피스 제공 -> videoView의 서피스
+                        mediaPlayer.setSurface(previewSurface);
+
+                        // 영상 무한 재생
+                        mediaPlayer.setLooping(true);
+
+                        // prepared되면 호출
+                        mediaPlayer.setOnPreparedListener(mp -> {
+                            // 영상 재생 및 placeholder 안보이게
+                            mp.start();
+                        });
+
+                        // 비동기 함수
+                        mediaPlayer.prepareAsync();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+                }
+
+                @Override
+                public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+                    return false;
+                }
+
+                @Override
+                public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+                }
+            });
         } catch (Exception e) {
             // 예외가 발생한 경우 placeholder를 표시하고 오류 메시지를 출력
             e.printStackTrace();  // 로그에 오류 출력
             showPlaceholder();    // Placeholder 화면 표시
         }
+        showVideo();
 
 
         // 버튼 6개를 참조
@@ -104,7 +153,14 @@ public class MainActivity extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 현재 videoView의 화면을 비트맵으로 가져온뒤 jpg로 압축해서 바이트 배열에 저장후 intent로 넘겨줌
+                Bitmap bitmap = videoView.getBitmap();
                 Intent intent = new Intent(MainActivity.this, SetZoneActivity.class);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream);
+                byte[] imgBytes = stream.toByteArray();
+
+                intent.putExtra("frame", imgBytes);
                 startActivity(intent);
             }
         });
@@ -144,14 +200,14 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private void playVideo(Uri videoUri) {
+    // videoPlaceholder를 안 보이게 하고 videoView를 보이게
+    private void showVideo() {
+        Log.i("Main", "showVideo called.");
         videoPlaceholder.setVisibility(View.GONE);
         videoView.setVisibility(View.VISIBLE);
-
-        videoView.setVideoURI(videoUri);
-        videoView.setOnPreparedListener(mp -> videoView.start());
     }
 
+    // videoPlaceholder를 보이게 하고 videoView를 안 보이게
     private void showPlaceholder() {
         videoView.setVisibility(View.GONE);
         videoPlaceholder.setVisibility(View.VISIBLE);
