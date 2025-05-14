@@ -140,7 +140,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     interface ServerStatusService {
-        @GET("status") // 서버 상태 확인 엔드포인트
+        @GET("health") // 서버 상태 확인 엔드포인트
         Call<ResponseBody> checkStatus();
     }
 
@@ -219,7 +219,7 @@ public class SettingActivity extends AppCompatActivity {
 
     interface UploadService {
         @Multipart
-        @POST("upload") // 서버의 업로드 엔드포인트
+        @POST("/voice/upload-audio") // 서버의 업로드 엔드포인트
         Call<ResponseBody> uploadAudio(@Part MultipartBody.Part file);
     }
 
