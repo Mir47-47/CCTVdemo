@@ -134,6 +134,7 @@ public class SettingActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.e("Retrofit", "요청 실패: " + t.getMessage());
                 callback.onResult(false);
             }
         });
