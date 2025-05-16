@@ -1,5 +1,6 @@
 package com.example.cctv2.Activity;
 
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -90,11 +91,14 @@ public class SettingActivity extends AppCompatActivity {
             if (isConnected) {
                 try {
                     // 녹음 파일 경로 설정
-                    audioFile = new File(getExternalFilesDir(null), "recorded_audio.3gp");
+                    audioFile = new File(getExternalFilesDir(null), "recorded_audio.acc");
+                    Log.d("AudioFile", "녹음 파일 경로: " + audioFile.getAbsolutePath());
                     mediaRecorder = new MediaRecorder();
-                    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                    mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                    mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+                    mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
+                    mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                    mediaRecorder.setAudioEncodingBitRate(128000);
+                    mediaRecorder.setAudioSamplingRate(44100);
                     mediaRecorder.setOutputFile(audioFile.getAbsolutePath());
                     mediaRecorder.prepare();
                     mediaRecorder.start();
@@ -156,6 +160,7 @@ public class SettingActivity extends AppCompatActivity {
                 mediaRecorder.release();
                 mediaRecorder = null;
                 Log.d("Recording", "녹음 끝");
+
                 uploadAudioFile();
             } catch(RuntimeException e){
                 e.printStackTrace();
@@ -174,7 +179,7 @@ public class SettingActivity extends AppCompatActivity {
 
         UploadService service = retrofit.create(UploadService.class);
 
-        RequestBody requestFile = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("audio/acc"), audioFile);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", audioFile.getName(), requestFile);
 
         Call<ResponseBody> call = service.uploadAudio(body);
