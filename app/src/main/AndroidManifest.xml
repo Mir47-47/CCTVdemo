@@ -59,6 +59,7 @@
         <activity android:name=".Activity.AlramListActivity" />
         <activity android:name=".Activity.DeviceConnectionActivity" />
         <activity android:name=".Activity.SettingActivity" />
+        <activity android:name=".Activity.ViewZoneActivity" />
 
 
         <service

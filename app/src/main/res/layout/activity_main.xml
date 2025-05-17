@@ -44,9 +44,9 @@
 
     <!-- 버튼 4개를 2행 2열로 정사각형 배치 -->
     <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="3"
         android:rowCount="2"
         android:layout_marginTop="24dp"
         android:alignmentMode="alignMargins"
@@ -56,22 +56,37 @@
         <Button
             android:id="@+id/btn3"
             style="@style/MainButtonStyle"
-            android:text="구역 설정" />
+            android:text=
+                "금지 구역
+            설정" />
 
         <Button
             android:id="@+id/btn4"
             style="@style/MainButtonStyle"
-            android:text="알람 목록" />
+            android:text=
+                "알람
+                목록" />
 
         <Button
             android:id="@+id/btn5"
             style="@style/MainButtonStyle"
-            android:text="기기 연결" />
+            android:text=
+                "기기
+                연결" />
 
         <Button
             android:id="@+id/btn6"
             style="@style/MainButtonStyle"
-            android:text="보이스 세팅" />
+            android:text=
+                "보이스
+                세팅" />
+
+        <Button
+            android:id="@+id/btn7"
+            style="@style/MainButtonStyle"
+            android:text=
+                "금지 구역
+                목록" />
     </GridLayout>
 
 

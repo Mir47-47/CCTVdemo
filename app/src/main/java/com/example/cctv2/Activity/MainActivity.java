@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         Button btn4 = findViewById(R.id.btn4);
         Button btn5 = findViewById(R.id.btn5);
         Button btn6 = findViewById(R.id.btn6);
+        Button btn7 = findViewById(R.id.btn7);
 
 
         // 다른 버튼들도 동일한 방식으로 설정 가능
@@ -186,6 +187,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                 intent.putExtra("server_url", getServerUrl());
+                startActivity(intent);
+            }
+        });
+
+        btn7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bitmap bitmap = videoView.getBitmap();
+                Intent intent = new Intent(MainActivity.this, ViewZoneActivity.class);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream);
+                byte[] imgBytes = stream.toByteArray();
+
+                intent.putExtra("frame", imgBytes);
                 startActivity(intent);
             }
         });
