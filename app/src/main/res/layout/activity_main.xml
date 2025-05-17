@@ -42,7 +42,7 @@
     </FrameLayout>
 
 
-    <!-- 버튼 4개를 2행 2열로 정사각형 배치 -->
+    <!-- 버튼 6개를 3행 2열로 사각형 배치 -->
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
