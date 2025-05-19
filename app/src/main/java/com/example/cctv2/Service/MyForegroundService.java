@@ -181,7 +181,7 @@ public class MyForegroundService extends Service {
 
 
     private void showNotification(String message) {
-        Notification notification = new NotificationCompat.Builder(this, "sound_channel_id")
+        Notification notification = new NotificationCompat.Builder(this, "channel_id")
                 .setContentTitle("감지됨")
                 .setContentText(message)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)//알림 아이콘

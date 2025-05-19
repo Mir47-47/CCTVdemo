@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private View videoPlaceholder;
     private TextureView videoView;
     private MediaPlayer mediaPlayer;
+    private long currentPosition = 0; // 현재 재생 위치를 저장할 변수
 
 
     private TextView statusTextView;
@@ -141,6 +142,22 @@ public class MainActivity extends AppCompatActivity {
         }
         showVideo();
 
+        videoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mediaPlayer != null) {
+                    // 현재 재생 위치 저장
+                    currentPosition = mediaPlayer.getCurrentPosition();
+
+                    // VideoPlayerActivity로 이동
+                    Intent intent = new Intent(MainActivity.this, VideoPlayerActivity.class);
+                    intent.putExtra("video_uri", videoUriString);
+                    intent.putExtra("current_position", currentPosition);
+                    startActivity(intent);
+                }
+            }
+        });
+
 
         // 버튼 6개를 참조
         Button btn3 = findViewById(R.id.btn3);
@@ -191,12 +208,44 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // 액티비티 일시정지 시 현재 위치 저장
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mediaPlayer != null) {
+            currentPosition = mediaPlayer.getCurrentPosition();
+            mediaPlayer.pause();
+        }
+    }
+
+    // 액티비티 재개 시 저장된 위치부터 재생
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mediaPlayer != null && mediaPlayer.isPlaying() == false) {
+            mediaPlayer.seekTo((int)currentPosition);
+            mediaPlayer.start();
+        }
+    }
+
+    // 액티비티 종료 시 미디어 플레이어 해제
     //broadcasting
     @Override
     protected void onDestroy() {
         super.onDestroy();
         // BroadcastReceiver 해제
-        unregisterReceiver(statusReceiver);
+        if (statusReceiver != null) {
+            try {
+                unregisterReceiver(statusReceiver);
+            } catch (IllegalArgumentException e) {
+                Log.e("MainActivity", "Receiver not registered: " + e.getMessage());
+            }
+        }
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
         finish();
     }
 
