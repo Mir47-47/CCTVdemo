@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -38,6 +39,7 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
+    implementation libs.play.services.maps
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -55,4 +57,8 @@ dependencies {
     //getter, setter, builder 자동 생성 라이브러리
     implementation 'org.projectlombok:lombok:1.18.30' // 버전은 최신으로
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // Google Places API 의존성 추가
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.android.libraries.places:places:3.1.0'
 }

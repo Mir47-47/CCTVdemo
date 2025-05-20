@@ -7,87 +7,115 @@
     android:padding="16dp"
     android:gravity="center_horizontal">
 
-    <!-- 앱 이름 -->
-    <TextView
-        android:id="@+id/NameAlramList"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="AIHomeCamClient"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginTop="20dp"/>
-
-    <!-- 영상 영역 -->
-    <FrameLayout
-        android:id="@+id/videoContainer"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:background="#000000"
-        android:foregroundGravity="center">
-
-        <View
-            android:id="@+id/videoPlaceholder"
+        android:orientation="vertical"
+        android:gravity="top">
+        <!-- 앱 이름 -->
+        <TextView
+            android:id="@+id/NameAlramList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#000000" />
+            android:layout_height="wrap_content"
+            android:text="AIHomeCamClient"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="20dp" />
 
-        <TextureView
-            android:id="@+id/videoView"
+        <!-- 영상 영역 -->
+        <FrameLayout
+            android:id="@+id/videoContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-    </FrameLayout>
+            android:layout_height="200dp"
+            android:layout_marginTop="16dp"
+            android:background="#000000"
+            android:foregroundGravity="center">
 
+            <View
+                android:id="@+id/videoPlaceholder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000" />
 
-    <!-- 버튼 6개를 3행 2열로 사각형 배치 -->
-    <GridLayout
+            <TextureView
+                android:id="@+id/videoView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- 버튼 4개를 2행 2열로 중앙 정렬 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="24dp">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="2"
+                android:alignmentMode="alignMargins"
+                android:columnOrderPreserved="false"
+                android:useDefaultMargins="true"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btn3"
+                    style="@style/MainButtonStyle"
+                    android:background="@drawable/btn_main"
+                    android:layout_gravity="center"
+                    android:layout_margin="16dp"
+                    android:text="금지 구역\n설정" />
+
+                <Button
+                    android:id="@+id/btn4"
+                    style="@style/MainButtonStyle"
+                    android:background="@drawable/btn_main"
+                    android:layout_gravity="center"
+                    android:layout_margin="16dp"
+                    android:text="알람\n목록" />
+
+                <Button
+                    android:id="@+id/btn6"
+                    style="@style/MainButtonStyle"
+                    android:background="@drawable/btn_main"
+                    android:layout_gravity="center"
+                    android:layout_margin="16dp"
+                    android:text="보이스\n세팅" />
+
+                <Button
+                    android:id="@+id/btn7"
+                    style="@style/MainButtonStyle"
+                    android:background="@drawable/btn_main"
+                    android:layout_gravity="center"
+                    android:layout_margin="16dp"
+                    android:text="금지 구역\n목록" />
+            </GridLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnCount="3"
-        android:rowCount="2"
-        android:layout_marginTop="24dp"
-        android:alignmentMode="alignMargins"
-        android:columnOrderPreserved="false"
-        android:useDefaultMargins="true">
+        android:gravity="bottom"
+        android:orientation="vertical">
 
+        <!-- 비상상황 버튼 -->
         <Button
-            android:id="@+id/btn3"
-            style="@style/MainButtonStyle"
-            android:text=
-                "금지 구역
-            설정" />
-
-        <Button
-            android:id="@+id/btn4"
-            style="@style/MainButtonStyle"
-            android:text=
-                "알람
-                목록" />
-
-        <Button
-            android:id="@+id/btn5"
-            style="@style/MainButtonStyle"
-            android:text=
-                "기기
-                연결" />
-
-        <Button
-            android:id="@+id/btn6"
-            style="@style/MainButtonStyle"
-            android:text=
-                "보이스
-                세팅" />
-
-        <Button
-            android:id="@+id/btn7"
-            style="@style/MainButtonStyle"
-            android:text=
-                "금지 구역
-                목록" />
-    </GridLayout>
-
+            android:id="@+id/btn8"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/btn_emergency"
+            android:gravity="center"
+            android:text="비상상황"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>

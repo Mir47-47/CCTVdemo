@@ -145,9 +145,10 @@ public class MainActivity extends AppCompatActivity {
         // 버튼 6개를 참조
         Button btn3 = findViewById(R.id.btn3);
         Button btn4 = findViewById(R.id.btn4);
-        Button btn5 = findViewById(R.id.btn5);
+//        Button btn5 = findViewById(R.id.btn5);
         Button btn6 = findViewById(R.id.btn6);
         Button btn7 = findViewById(R.id.btn7);
+        Button btn8 = findViewById(R.id.btn8);
 
 
         // 다른 버튼들도 동일한 방식으로 설정 가능
@@ -174,13 +175,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, DeviceConnectionActivity.class);
-                startActivity(intent);
-            }
-        });
+//        btn5.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, DeviceConnectionActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         btn6.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,6 +202,13 @@ public class MainActivity extends AppCompatActivity {
                 byte[] imgBytes = stream.toByteArray();
 
                 intent.putExtra("frame", imgBytes);
+                startActivity(intent);
+            }
+        });
+        btn8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(intent);
             }
         });
