@@ -19,8 +19,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class AlramListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -43,21 +45,6 @@ public class AlramListActivity extends AppCompatActivity {
             finish(); // 현재 Activity 종료
         });
     }
-    private List<String> readMessagesFromFile() {
-        List<String> messages = new ArrayList<>();
-        File file = new File(getFilesDir(), "messages.txt");
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                messages.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return messages;
-    }
 
     private List<AlarmItem> loadAlarmListFromFile() {
         List<AlarmItem> itemList = new ArrayList<>();
@@ -68,8 +55,11 @@ public class AlramListActivity extends AppCompatActivity {
             while ((line = reader.readLine()) != null) {
                 JSONObject json = new JSONObject(line);
                 String message = json.optString("message", "");
-                String date = json.optString("date", "");
-                itemList.add(new AlarmItem(message, date));
+                int date = json.optInt("date", 0);
+                int type = json.optInt("message_type", 0);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+                String dateString = dateFormat.format(date);
+                itemList.add(new AlarmItem(message, dateString, type));
             }
         } catch (Exception e) {
             Log.e("AlarmListActivity", "파일 읽기 오류", e);

@@ -4,16 +4,19 @@ public class AlarmItem {
     private String message;
     private String date;
     private String imagePath;
+    private int type;
 
-    public AlarmItem(String message, String date) {
+    public AlarmItem(String message, String date, int type) {
         this.message = message;
         this.date = date;
         this.imagePath = null; // 기본값으로 기본 사진 설정
+        this.type = type;
     }
 
     public String getMessage() { return message; }
     public String getDate() { return date; }
     public String getImagePath() { return imagePath; }
+    public int getType() { return type; }
 
     @Override
     public boolean equals(Object obj) {

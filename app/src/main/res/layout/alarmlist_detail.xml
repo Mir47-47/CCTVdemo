@@ -20,6 +20,16 @@
         android:layout_marginTop="4dp"
         android:textSize="14sp" />
 
+    <!-- 정상/비정상 표시 -->
+    <TextView
+        android:id="@+id/detailType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="정상 여부"
+        android:textSize="14sp"
+        android:textColor="#FF0000"
+        android:layout_marginTop="4dp" />
+
     <ImageView
         android:id="@+id/detailImage"
         android:layout_width="match_parent"
