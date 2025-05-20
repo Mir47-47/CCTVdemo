@@ -55,7 +55,7 @@ public class AlramListActivity extends AppCompatActivity {
             while ((line = reader.readLine()) != null) {
                 JSONObject json = new JSONObject(line);
                 String message = json.optString("message", "");
-                int date = json.optInt("date", 0);
+                long date = json.optInt("date", 0) * 1000L; // s -> ms
                 int type = json.optInt("message_type", 0);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
                 String dateString = dateFormat.format(date);
