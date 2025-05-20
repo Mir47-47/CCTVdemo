@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,10 +86,20 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
 
         TextView messageText = view.findViewById(R.id.detailMessage);
         TextView dateText = view.findViewById(R.id.detailDate);
+        TextView typeText = view.findViewById(R.id.detailType);
         ImageView imageView = view.findViewById(R.id.detailImage);
 
         messageText.setText("메시지: " + item.getMessage());
-        dateText.setText("날짜: " + item.getDate());
+        dateText.setText("날짜: " + item.getDate());// 날짜 들어오는 형태 받아서 계산 해줘야함
+        Log.d("AlarmAdapter", "Type: " + item.getType());
+
+        if (item.getType() == 0) {
+            typeText.setText("정상");
+            typeText.setTextColor(Color.parseColor("#008000")); // 녹색
+        } else {
+            typeText.setText("비정상");
+            typeText.setTextColor(Color.parseColor("#FF0000")); // 빨간색
+        }
 
         // 예시: drawable에서 이미지 설정
         if (item.getImagePath() != null && !item.getImagePath().isEmpty()) {
@@ -124,11 +135,13 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             while ((line = reader.readLine()) != null) {
                 JSONObject json = new JSONObject(line);
                 String msg = json.optString("message", "");  // 오타 주의
-                String date = json.optString("date", "");     // 오타 주의
+                String date = Integer.toString(json.optInt("date", 0));// 오타 주의
+                int type = json.optInt("message_type", 0);
 
                 // 현재 줄이 삭제 대상이 아니면 유지
-                if (!(msg.equals(item.getMessage()) && date.equals(item.getDate()))) {
+                if (!(msg.equals(item.getMessage()) && date.equals(item.getDate()) && type == item.getType())) {
                     newLines.add(line);
+                    break;
                 }
             }
         } catch (Exception e) {
