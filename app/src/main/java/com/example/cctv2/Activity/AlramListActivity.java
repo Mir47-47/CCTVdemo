@@ -19,8 +19,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class AlramListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -53,9 +55,13 @@ public class AlramListActivity extends AppCompatActivity {
             while ((line = reader.readLine()) != null) {
                 JSONObject json = new JSONObject(line);
                 String message = json.optString("message", "");
-                String date = Integer.toString(json.optInt("date", 0));
+                long date = json.optInt("date", 0)*1000L; // Unix timestamp를 밀리초로 변환
+                Log.i("AlarmListActivity", "date: " + date);
                 int type = json.optInt("message_type", 0);
-                itemList.add(new AlarmItem(message, date, type));
+                // SimpleDateFormat을 사용하여 포맷 지정
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+                String dateString = dateFormat.format(date);
+                itemList.add(new AlarmItem(message, dateString, type));
             }
         } catch (Exception e) {
             Log.e("AlarmListActivity", "파일 읽기 오류", e);
