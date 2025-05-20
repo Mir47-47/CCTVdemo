@@ -43,21 +43,6 @@ public class AlramListActivity extends AppCompatActivity {
             finish(); // 현재 Activity 종료
         });
     }
-    private List<String> readMessagesFromFile() {
-        List<String> messages = new ArrayList<>();
-        File file = new File(getFilesDir(), "messages.txt");
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                messages.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return messages;
-    }
 
     private List<AlarmItem> loadAlarmListFromFile() {
         List<AlarmItem> itemList = new ArrayList<>();
@@ -68,8 +53,9 @@ public class AlramListActivity extends AppCompatActivity {
             while ((line = reader.readLine()) != null) {
                 JSONObject json = new JSONObject(line);
                 String message = json.optString("message", "");
-                String date = json.optString("date", "");
-                itemList.add(new AlarmItem(message, date));
+                String date = Integer.toString(json.optInt("date", 0));
+                int type = json.optInt("message_type", 0);
+                itemList.add(new AlarmItem(message, date, type));
             }
         } catch (Exception e) {
             Log.e("AlarmListActivity", "파일 읽기 오류", e);
