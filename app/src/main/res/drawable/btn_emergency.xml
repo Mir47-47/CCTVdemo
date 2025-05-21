@@ -1,5 +1,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#FF0000" /> <!-- 빨간색 배경 -->
+    <solid android:color="#DE92ED" /> <!-- 빨간색 배경 -->
     <corners
         android:topLeftRadius="16dp"
         android:topRightRadius="16dp"

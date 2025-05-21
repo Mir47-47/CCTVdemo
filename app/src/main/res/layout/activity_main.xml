@@ -13,15 +13,7 @@
         android:orientation="vertical"
         android:gravity="top">
         <!-- 앱 이름 -->
-        <TextView
-            android:id="@+id/NameAlramList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="AIHomeCamClient"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginTop="20dp" />
+
 
         <!-- 영상 영역 -->
         <FrameLayout
@@ -109,17 +101,32 @@
         android:orientation="vertical">
 
         <!-- 비상상황 버튼 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn8"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="0dp"
-            android:background="@drawable/btn_emergency"
-            android:gravity="center"
-            android:text="비상상황"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:background="@drawable/btn_emergency">
+            
+            <ImageButton
+                android:id="@+id/btn8"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="24dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_emergency"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:padding="0dp"
+                android:contentDescription="비상상황 버튼" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="비상상황"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
     </LinearLayout>
 
 </LinearLayout>
