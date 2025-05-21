@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -60,7 +62,6 @@ public class MyForegroundService extends Service {
         Notification notification = new NotificationCompat.Builder(this, "channel_id")
                 .setContentTitle("백그라운드 작업 실행 중")
                 .setContentText("REST API 요청을 보내는 중...")
-                .setSmallIcon(R.drawable.alarm_icon)
                 .build();
 
         startForeground(1, notification);
@@ -181,10 +182,14 @@ public class MyForegroundService extends Service {
 
 
     private void showNotification(String message) {
+        //알람 이미지를 bitmap으로 변환
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.aihomecamlogo_round);
+
         Notification notification = new NotificationCompat.Builder(this, "sound_channel_id")
                 .setContentTitle("감지됨")
                 .setContentText(message)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)//알림 아이콘
+                .setSmallIcon(R.drawable.aihomecamlogo_round)//알림 아이콘
+                .setLargeIcon(largeIcon)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .build();
 
@@ -213,7 +218,7 @@ public class MyForegroundService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "소리 알림 채널";
             String description = "이 채널의 알림은 소리를 냅니다.";
-            int importance = NotificationManager.IMPORTANCE_HIGH;  // HIGH 이상이어야 소리+팝업 가능
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;  // HIGH 이상이어야 소리+팝업 가능
 
             NotificationChannel channel = new NotificationChannel("sound_channel_id", name, importance);
             channel.setDescription(description);
