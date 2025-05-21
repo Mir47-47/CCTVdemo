@@ -72,6 +72,7 @@
         <activity android:name=".Activity.DeviceConnectionActivity" />
         <activity android:name=".Activity.SettingActivity" />
         <activity android:name=".Activity.ViewZoneActivity" />
+        <activity android:name=".Activity.FullscreenVideoActivity" android:screenOrientation="landscape" />
 
         <service
             android:name=".Service.MyForegroundService"

@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver statusReceiver;
 
     @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-    @SuppressLint("UnspecifiedRegisterReceiverFlag")
+    @SuppressLint({"UnspecifiedRegisterReceiverFlag", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +91,15 @@ public class MainActivity extends AppCompatActivity {
         videoView.setPlayer(player);
         playerManager.prepare(Uri.parse(videoUriString), 0);
 
+        videoView.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                long pos = PlayerManager.getInstance(this).getCurrentPosition();
+                Intent intent = new Intent(this, FullscreenVideoActivity.class);
+                intent.putExtra("position", pos);
+                startActivity(intent);
+            }
+            return true;
+        });
 
         // 버튼 6개를 참조
         Button setZoneBtn = findViewById(R.id.btn3);
