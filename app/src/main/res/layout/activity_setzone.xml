@@ -52,4 +52,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <!-- 뒤로가기 버튼을 맨 아래 왼쪽에 배치 -->
+        <Button
+            android:id="@+id/buttonBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="뒤로가기"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/> <!-- 부모의 맨 아래에 배치 -->
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

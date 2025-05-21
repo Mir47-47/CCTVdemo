@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,7 @@ import okhttp3.Response;
 public class ViewZoneActivity extends AppCompatActivity {
     ImageView imgView;
     AreaView areaView;
+    Button BackBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,11 @@ public class ViewZoneActivity extends AppCompatActivity {
 
         imgView = findViewById(R.id.viewZoneImage);
         areaView = findViewById(R.id.viewZoneArea);
+
+        BackBtn = findViewById(R.id.buttonBack);
+        BackBtn.setOnClickListener(v -> {
+            finish(); // 현재 Activity 종료
+        });
 
         // intent와 함께 넘어온 이미지 바이트 배열을 decode해서 imgView에 보여주기
         byte[] imgBytes = getIntent().getByteArrayExtra("frame");

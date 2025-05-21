@@ -31,6 +31,7 @@ public class SetZoneActivity extends AppCompatActivity {
     ImageView imgView;
     AreaSelectorView selectorView;
     Button saveBtn;
+    Button BackBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,11 @@ public class SetZoneActivity extends AppCompatActivity {
         imgView = findViewById(R.id.setZoneImage);
         selectorView = findViewById(R.id.setZoneArea);
         saveBtn = findViewById(R.id.saveZoneBtn);
+
+        BackBtn = findViewById(R.id.buttonBack);
+        BackBtn.setOnClickListener(v -> {
+            finish(); // 현재 Activity 종료
+        });
 
         // intent와 함께 넘어온 이미지 바이트 배열을 decode해서 imgView에 보여주기
         byte[] imgBytes = getIntent().getByteArrayExtra("frame");
