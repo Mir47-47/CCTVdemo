@@ -56,7 +56,6 @@ public class AlramListActivity extends AppCompatActivity {
                 JSONObject json = new JSONObject(line);
                 String message = json.optString("message", "");
                 long date = json.optInt("date", 0)*1000L; // Unix timestamp를 밀리초로 변환
-                Log.i("AlarmListActivity", "date: " + date);
                 int type = json.optInt("message_type", 0);
                 // SimpleDateFormat을 사용하여 포맷 지정
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);

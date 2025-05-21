@@ -26,8 +26,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHolder> {
 
@@ -135,11 +137,14 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             while ((line = reader.readLine()) != null) {
                 JSONObject json = new JSONObject(line);
                 String msg = json.optString("message", "");  // 오타 주의
-                String date = Integer.toString(json.optInt("date", 0));// 오타 주의
+                long date = json.optInt("date", 0)*1000L; // Unix timestamp를 밀리초로 변환
                 int type = json.optInt("message_type", 0);
+                // SimpleDateFormat을 사용하여 포맷 지정
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+                String dateString = dateFormat.format(date);
 
                 // 현재 줄이 삭제 대상이 아니면 유지
-                if (!(msg.equals(item.getMessage()) && date.equals(item.getDate()) && type == item.getType())) {
+                if (!(msg.equals(item.getMessage()) && (dateString.equals(item.getDate())) && (type == item.getType()))) {
                     newLines.add(line);
                     break;
                 }
