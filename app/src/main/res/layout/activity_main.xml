@@ -63,36 +63,40 @@
                 android:useDefaultMargins="true"
                 android:gravity="center">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn3"
                     style="@style/MainButtonStyle"
                     android:background="@drawable/btn_main"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
+                    android:backgroundTint="@null"
                     android:text="금지 구역\n설정" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn4"
                     style="@style/MainButtonStyle"
                     android:background="@drawable/btn_main"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
+                    android:backgroundTint="@null"
                     android:text="알람\n목록" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn6"
                     style="@style/MainButtonStyle"
                     android:background="@drawable/btn_main"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
+                    android:backgroundTint="@null"
                     android:text="보이스\n세팅" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn7"
                     style="@style/MainButtonStyle"
                     android:background="@drawable/btn_main"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
+                    android:backgroundTint="@null"
                     android:text="금지 구역\n목록" />
             </GridLayout>
         </LinearLayout>
@@ -105,7 +109,7 @@
         android:orientation="vertical">
 
         <!-- 비상상황 버튼 -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn8"
             android:layout_width="match_parent"
             android:layout_height="60dp"
