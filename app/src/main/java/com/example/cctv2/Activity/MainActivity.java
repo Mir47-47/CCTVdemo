@@ -19,6 +19,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 //        Button btn5 = findViewById(R.id.btn5);
         Button btn6 = findViewById(R.id.btn6);
         Button btn7 = findViewById(R.id.btn7);
-        Button btn8 = findViewById(R.id.btn8);
+        ImageButton btn8 = findViewById(R.id.btn8);
 
 
         // 다른 버튼들도 동일한 방식으로 설정 가능
