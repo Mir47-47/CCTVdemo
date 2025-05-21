@@ -51,6 +51,13 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     public void onBindViewHolder(@NonNull AlarmViewHolder holder, int position) {
         AlarmItem item = alarmList.get(position);
         holder.messageText.setText(item.getMessage());
+
+        int type = item.getType();
+        if(type == 0) {
+            holder.messageText.setTextColor(Color.parseColor("#008000")); // 녹색
+        } else {
+            holder.messageText.setTextColor(Color.parseColor("#FF0000")); // 빨간색
+        }
         holder.dateText.setText(item.getDate());
 
         //상세 팝업
