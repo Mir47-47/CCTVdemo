@@ -1,6 +1,5 @@
 package com.example.cctv2.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cctv2.Activity.MessageAlram.AlarmAdapter;
-import com.example.cctv2.Activity.MessageAlram.MessageAdapter;
+import com.example.cctv2.Activity.MessageAlram.AlarmItem;
 import com.example.cctv2.R;
 
 import org.json.JSONObject;
@@ -18,7 +17,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;

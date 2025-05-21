@@ -1,4 +1,4 @@
-package com.example.cctv2.Activity;
+package com.example.cctv2.Activity.MessageAlram;
 
 public class AlarmItem {
     private String message;

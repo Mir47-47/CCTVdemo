@@ -16,7 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cctv2.Activity.AlarmItem;
 import com.example.cctv2.R;
 
 import org.json.JSONObject;
