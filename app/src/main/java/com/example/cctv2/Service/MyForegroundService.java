@@ -40,7 +40,9 @@ import okhttp3.*;
 
 public class MyForegroundService extends Service {
     //에뮬은 localhost대신 10.0.2.2를 사용해야 pc localhost로 연결됨
-    private final String HostUrl = ServerUrl.getServerUrl(); //서버 주소
+//    private final String HostUrl = ServerUrl.getServerUrl(); //서버 주소
+
+    private final String HostUrl = "http://10.0.2.2";
     private Handler handler = new Handler();
     private Runnable runnable;
     private final int interval = 10000; // 10초
@@ -218,18 +220,12 @@ public class MyForegroundService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "소리 알림 채널";
             String description = "이 채널의 알림은 소리를 냅니다.";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;  // HIGH 이상이어야 소리+팝업 가능
+            int importance = NotificationManager.IMPORTANCE_HIGH;  // HIGH 이상이어야 소리+팝업 가능
 
             NotificationChannel channel = new NotificationChannel("sound_channel_id", name, importance);
             channel.setDescription(description);
 
-            // 기본 알림 소리 설정
-            Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .build();
-
-            channel.setSound(soundUri, audioAttributes);
+            channel.setSound(null,null);
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             if (notificationManager != null) {
