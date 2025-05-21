@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -42,11 +43,18 @@ public class SettingActivity extends AppCompatActivity {
     private VideoView videoView;
     private View videoPlaceholder;
 
+    Button BackBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_setting);
+
+        BackBtn = findViewById(R.id.buttonBack);
+        BackBtn.setOnClickListener(v -> {
+            finish(); // 현재 Activity 종료
+        });
 
         //서버 주소 가져오기
         severUrl = getIntent().getStringExtra("server_url");
