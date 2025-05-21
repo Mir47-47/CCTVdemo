@@ -38,7 +38,7 @@ import okhttp3.*;
 
 public class MyForegroundService extends Service {
     //에뮬은 localhost대신 10.0.2.2를 사용해야 pc localhost로 연결됨
-    private final String HostUrl = "http://192.168.0.9:8000"; //서버 주소
+    private final String HostUrl = ServerUrl.getServerUrl(); //서버 주소
     private Handler handler = new Handler();
     private Runnable runnable;
     private final int interval = 10000; // 10초
