@@ -68,7 +68,7 @@
             android:theme="@style/Theme.CCTV2" />
         <activity android:name=".Activity.ClipActivity" />
         <activity android:name=".Activity.SetZoneActivity" />
-        <activity android:name=".Activity.AlramListActivity" />
+        <activity android:name=".Activity.AlarmListActivity" />
         <activity android:name=".Activity.DeviceConnectionActivity" />
         <activity android:name=".Activity.SettingActivity" />
         <activity android:name=".Activity.ViewZoneActivity" />
