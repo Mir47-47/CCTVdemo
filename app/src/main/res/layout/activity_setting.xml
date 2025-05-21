@@ -41,27 +41,22 @@
     </LinearLayout>
 
     <!-- 영상 재생 영역 -->
-    <FrameLayout
-        android:id="@+id/videoContainer"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:background="#000000"
-        android:foregroundGravity="center">
+        android:layout_height="wrap_content">
 
-        <View
-            android:id="@+id/videoPlaceholder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#000000" />
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/settingVideoView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#000000"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintDimensionRatio="16:9"
+            app:use_controller="false"/>
 
-        <VideoView
-            android:id="@+id/setVideoView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

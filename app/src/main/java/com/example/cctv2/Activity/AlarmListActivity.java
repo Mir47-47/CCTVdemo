@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class AlramListActivity extends AppCompatActivity {
+public class AlarmListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Button BackBtn;
 
