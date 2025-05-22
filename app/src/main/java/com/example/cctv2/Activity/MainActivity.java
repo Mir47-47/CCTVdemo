@@ -27,6 +27,8 @@ import androidx.media3.common.util.UnstableApi;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
+import com.example.cctv2.Activity.Zone.SetZoneActivity;
+import com.example.cctv2.Activity.Zone.ViewZoneActivity;
 import com.example.cctv2.R;
 import com.example.cctv2.Service.MyForegroundService;
 import com.example.cctv2.Service.PlayerManager;

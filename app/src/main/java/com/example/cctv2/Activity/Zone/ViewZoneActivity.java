@@ -1,14 +1,17 @@
-package com.example.cctv2.Activity;
+package com.example.cctv2.Activity.Zone;
 
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cctv2.R;
 import com.example.cctv2.View.AreaView;
@@ -19,19 +22,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class ViewZoneActivity extends AppCompatActivity {
+    List<RectF> zoneList;
     ImageView imgView;
     AreaView areaView;
     Button BackBtn;
+    RecyclerView zoneListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,26 @@ public class ViewZoneActivity extends AppCompatActivity {
         BackBtn = findViewById(R.id.buttonBack);
         BackBtn.setOnClickListener(v -> {
             finish(); // 현재 Activity 종료
+        });
+
+        zoneListView = findViewById(R.id.zoneListView);
+        zoneListView.setLayoutManager(new LinearLayoutManager(this));
+
+        zoneList = new ArrayList<>();
+        ZoneListAdapter adapter = new ZoneListAdapter(zoneList, this);
+        zoneListView.setAdapter(adapter);
+
+        adapter.setHighlightZoneEvent(pos -> {
+            Log.i("ViewZoneActivity", "금지구역 #" + pos + " 하이라이팅");
+            areaView.setHighLightIndex(pos);
+        });
+
+        adapter.setDeleteZoneEvent(() -> {
+            Log.i("ViewZoneActivity", "금지구역 삭제 이벤트");
+            areaView.setHighLightIndex(-1);
+            areaView.resetRect();
+            for (RectF rect : zoneList)
+                areaView.addRect(rect.left, rect.top, rect.right, rect.bottom);
         });
 
         // intent와 함께 넘어온 이미지 바이트 배열을 decode해서 imgView에 보여주기
@@ -80,6 +105,7 @@ public class ViewZoneActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         Log.i("ViewZoneActivity", "요청 성공. 응답 코드: " + response.code());
                         try {
+                            zoneList.clear();
                             JSONObject jsonBody = new JSONObject(response.body().string());
                             int count = jsonBody.getInt("count");
                             Log.i("ViewZoneActivity", "저장된 Area count: " + count);
@@ -92,6 +118,7 @@ public class ViewZoneActivity extends AppCompatActivity {
                                 y2 = (float) jsonArray.getJSONObject(i).getDouble("y2");
                                 // post를 이용해 view load후 실행 하도록
                                 areaView.post(() -> areaView.addRect(x1, y1, x2, y2));
+                                zoneList.add(new RectF(x1, y1, x2, y2));
                                 Log.i("ViewZoneActivity", String.format("Area View에 area추가 %.2f,%.2f,%.2f,%.2f", x1, y1, x2, y2));
                             }
                         } catch (JSONException | IOException e) {

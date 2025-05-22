@@ -1,4 +1,4 @@
-package com.example.cctv2.Activity;
+package com.example.cctv2.Activity.Zone;
 
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
