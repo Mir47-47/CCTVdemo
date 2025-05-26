@@ -223,7 +223,14 @@ public class MyForegroundService extends Service {
             NotificationChannel channel = new NotificationChannel("sound_channel_id", name, importance);
             channel.setDescription(description);
 
-            channel.setSound(null,null);
+//            channel.setSound(null,null);
+            // 기본 알림음 사용
+            Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build();
+            channel.setSound(soundUri, audioAttributes);
+
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             if (notificationManager != null) {
