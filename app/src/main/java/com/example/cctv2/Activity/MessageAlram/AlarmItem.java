@@ -1,5 +1,7 @@
 package com.example.cctv2.Activity.MessageAlram;
 
+import com.example.cctv2.R;
+
 public class AlarmItem {
     private String message;
     private String date;
@@ -9,7 +11,7 @@ public class AlarmItem {
     public AlarmItem(String message, String date, int type) {
         this.message = message;
         this.date = date;
-        this.imagePath = null; // 기본값으로 기본 사진 설정
+        this.imagePath = "R.drawable.samplepicture"+Integer.toString(type); // 기본값으로 기본 사진 설정
         this.type = type;
     }
 

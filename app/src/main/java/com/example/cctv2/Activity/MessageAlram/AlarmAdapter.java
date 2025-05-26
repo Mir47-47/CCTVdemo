@@ -111,10 +111,11 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
 
         // 예시: drawable에서 이미지 설정
         if (item.getImagePath() != null && !item.getImagePath().isEmpty()) {
-            File imgFile = new File(item.getImagePath());
-            if (imgFile.exists()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                imageView.setImageBitmap(bitmap);
+            String imagePath = item.getImagePath();
+            String[] parts = imagePath.split("\\.");
+            int resId = context.getResources().getIdentifier(parts[2], "drawable", context.getPackageName());
+            if (resId != 0) {
+                imageView.setImageResource(resId); // drawable 리소스에서 이미지 설정
             } else {
                 imageView.setImageResource(R.drawable.samplehousepicture); // 기본 이미지
             }
