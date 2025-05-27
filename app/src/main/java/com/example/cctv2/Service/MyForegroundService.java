@@ -16,6 +16,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
 import android.util.*;
 
@@ -41,7 +42,6 @@ import okhttp3.*;
 public class MyForegroundService extends Service {
     //에뮬은 localhost대신 10.0.2.2를 사용해야 pc localhost로 연결됨
     private final String HostUrl = ServerUrl.getServerUrl(); //서버 주소
-    private Handler handler = new Handler();
     private Runnable runnable;
     private final int interval = 10000; // 10초
     private int failureCount = 0; // 실패 카운트 초기화
@@ -50,10 +50,18 @@ public class MyForegroundService extends Service {
     public static final String ACTION_STATUS_UPDATE = "com.example.status.UPDATE";
     public static final String EXTRA_STATUS = "status";
 
+    private HandlerThread handlerThread;
+    private Handler handler;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 서비스 시작 로그
         Log.i("Service", "Start service");
+
+        // onStartCommand()에서 초기화
+        handlerThread = new HandlerThread("AlarmServiceThread");
+        handlerThread.start();
+        handler = new Handler(handlerThread.getLooper());
 
         saveServerUrl(HostUrl);//서버 주소 저장
 
@@ -246,9 +254,14 @@ public class MyForegroundService extends Service {
 
 
     @Override public IBinder onBind(Intent intent) { return null; }
-    @Override public void onDestroy() {
+    // onDestroy()에서 정리
+    @Override
+    public void onDestroy() {
         super.onDestroy();
         handler.removeCallbacks(runnable);
+        if (handlerThread != null) {
+            handlerThread.quitSafely();
+        }
     }
 }
 
