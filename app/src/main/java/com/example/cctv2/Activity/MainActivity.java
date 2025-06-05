@@ -23,6 +23,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
@@ -94,12 +95,18 @@ public class MainActivity extends AppCompatActivity {
         playerManager.prepare(Uri.parse(videoUriString), 0);
 
         videoView.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                long pos = PlayerManager.getInstance(this).getCurrentPosition();
-                Intent intent = new Intent(this, FullscreenVideoActivity.class);
-                intent.putExtra("position", pos);
-                startActivity(intent);
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (playerManager.getPlayer().getPlayWhenReady())
+                    playerManager.getPlayer().pause();
+                else
+                    playerManager.getPlayer().play();
             }
+//            if (event.getAction() == MotionEvent.ACTION_UP) {
+//                long pos = PlayerManager.getInstance(this).getCurrentPosition();
+//                Intent intent = new Intent(this, FullscreenVideoActivity.class);
+//                intent.putExtra("position", pos);
+//                startActivity(intent);
+//            }
             return true;
         });
 
