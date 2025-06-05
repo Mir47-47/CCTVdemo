@@ -143,7 +143,7 @@ public class MyForegroundService extends Service {
             }
         });
     }
-//서버 요청에 대한 확인데이터 전파
+    //서버 요청에 대한 확인데이터 전파
     private void sendStatusUpdate(String status) {
         // 상태 저장 (SharedPreferences)
         SharedPreferences prefs = getSharedPreferences("ServerPrefs", MODE_PRIVATE);
@@ -264,4 +264,3 @@ public class MyForegroundService extends Service {
         }
     }
 }
-

@@ -32,6 +32,7 @@ public class SetZoneActivity extends AppCompatActivity {
     AreaSelectorView selectorView;
     Button saveBtn;
     Button BackBtn;
+    Button recordBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +43,53 @@ public class SetZoneActivity extends AppCompatActivity {
         selectorView = findViewById(R.id.setZoneArea);
         saveBtn = findViewById(R.id.saveZoneBtn);
 
+        recordBtn = findViewById(R.id.recordVoiceBtn);
+
         BackBtn = findViewById(R.id.buttonBack);
         BackBtn.setOnClickListener(v -> {
             finish(); // 현재 Activity 종료
+        });
+        recordBtn.setOnClickListener(v -> {
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(SetZoneActivity.this);
+            android.widget.LinearLayout layout = new android.widget.LinearLayout(SetZoneActivity.this);
+            layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+            layout.setPadding(50, 50, 50, 50);
+
+            android.widget.TextView message = new android.widget.TextView(SetZoneActivity.this);
+            message.setText("\"홍길동 여기 보렴\"이라고 말해주세요");
+            message.setTextSize(20);
+            layout.addView(message);
+
+            android.widget.ImageButton exampleRecordBtn = new android.widget.ImageButton(SetZoneActivity.this);
+            exampleRecordBtn.setImageResource(R.drawable.mic_24px);
+            exampleRecordBtn.setBackgroundResource(android.R.color.transparent);
+            layout.addView(exampleRecordBtn);
+
+            builder.setView(layout);
+            android.app.AlertDialog dialog = builder.create();
+            dialog.show();
+
+            final boolean[] firstPress = {true};
+
+            exampleRecordBtn.setOnTouchListener((view, event) -> {
+                switch (event.getAction()) {
+                    case android.view.MotionEvent.ACTION_DOWN:
+                        // 버튼 눌렀을 때 빨간색으로 변경
+                        exampleRecordBtn.setColorFilter(android.graphics.Color.RED);
+                        break;
+                    case android.view.MotionEvent.ACTION_UP:
+                        // 버튼에서 손을 뗐을 때 원래 색으로 복원
+                        exampleRecordBtn.clearColorFilter();
+                        if (firstPress[0]) {
+                            message.setText("\"감자는 하몽보다 맛있다.\"이라고 말해주세요");
+                            firstPress[0] = false;
+                        } else {
+                            dialog.dismiss();
+                        }
+                        break;
+                }
+                return true;
+            });
         });
 
         // intent와 함께 넘어온 이미지 바이트 배열을 decode해서 imgView에 보여주기

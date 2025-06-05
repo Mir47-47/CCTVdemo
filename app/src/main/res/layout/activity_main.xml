@@ -59,7 +59,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
                     android:backgroundTint="@null"
-                    android:text="금지 구역\n설정" />
+                    android:text="설정" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn4"
@@ -77,7 +77,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
                     android:backgroundTint="@null"
-                    android:text="보이스\n세팅" />
+                    android:text="음성\n통화" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn7"
